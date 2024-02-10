@@ -78,14 +78,11 @@ class Local2Public:
             raise ValueError("No public_url found")
         with open("links.txt", "w") as file:
             for i in self.dir.iterdir():
-                file.write(f"{self.public_url}/{i}\n")
+                file.write(f"{self.public_url}/{i.name}\n")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print(f"{sys.argv[0]} <directory_path>")
-        sys.exit(1)
-    inst = Local2Public(1234, 3214, Path(sys.argv[1]))
+    inst = Local2Public(1234, 3214, Path("toupload"))
     inst.check_bin()
     try:
         inst.start_tunnel()
@@ -96,5 +93,7 @@ if __name__ == "__main__":
         inst.run_flask()
         inst.write_file()
         print("[+] File Is Ready!")
+    except Exception as e:
+        print('Error: ', e)
     finally:
         inst.proc.wait()
